@@ -1,0 +1,43 @@
+{% set newrelic = salt['pillar.get']('newrelic', {
+
+    'repo': salt['grains.filter_by']({
+        'Debian': {
+            'name':         'deb http://apt.newrelic.com/debian/ newrelic non-free',
+            'file':         '/etc/apt/sources.list.d/newrelic.list',
+            'key_url':      'https://download.newrelic.com/548C16BF.gpg',
+        },
+        'RedHat': {
+            'humanname':    'New Relic packages for Enterprise Linux 5 - $basearch',
+            'name':         'newrelic',
+            'baseurl':      'http://yum.newrelic.com/pub/newrelic/el5/$basearch',
+            'gpgcheck':     true,
+            'gpgkey':       'https://download.newrelic.com/548C16BF.gpg',
+        },
+    }, default='RedHat'),
+
+
+    'nrsysmond': salt['grains.filter_by']({
+        'RedHat': {
+            'name':         '/etc/newrelic/nrsysmond.cfg',
+            'source':       'salt://newrelic/files/nrsysmond.cfg.jinja',
+            'template':     'jinja',
+        },
+    }, default='RedHat'),
+
+
+    'service': salt['grains.filter_by']({
+        'RedHat': {
+            'state':        'running',
+            'name':         'newrelic-sysmond',
+            'enable':       'none',
+        },
+    }, default='RedHat'),
+
+
+    'install': salt['grains.filter_by']({
+        'RedHat': {
+            'name':         'newrelic-sysmond',
+        },
+    }, default='RedHat'),
+
+}, merge=true) %}
