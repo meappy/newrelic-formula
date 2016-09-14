@@ -3,7 +3,9 @@
 {% if (p|count) != 0 %}
 newrelic_plugins:
     {% for k,v in p.items() %}
-        pkg.{{ v }}:
+        pkg.installed:
             - name: {{ k }}
     {% endfor %}
 {% endif %}
+
+# vim: set bg=dark syntax=yaml paste:
