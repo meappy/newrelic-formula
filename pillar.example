@@ -7,4 +7,6 @@ newrelic:
         newrelic-php5: true
 
     plugins:
-        newrelic-php5: true
+        memcached: true
+        nginx: true
+        php_fpm: true
