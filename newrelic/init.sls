@@ -2,5 +2,6 @@ include:
     - newrelic.repo
     - newrelic.install
     - newrelic.config
-    - newrelic.plugins
+    - newrelic.packages
     - newrelic.service
+    - newrelic.newrelic-php-agent-install

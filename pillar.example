@@ -6,6 +6,8 @@ newrelic:
     packages:
         newrelic-php5: true
 
+    # We're going to use New Relic Platform Installer (NPI) to install plugins
+    # https://goo.gl/i12JPG
     plugins:
         memcached: true
         nginx: true
