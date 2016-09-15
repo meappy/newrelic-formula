@@ -4,7 +4,7 @@ newrelic:
         proxy: '10.0.4.69:8080'
 
     packages:
-        newrelic-php5: true
+        newrelic-php: true
 
     # We're going to use New Relic Platform Installer (NPI) to install plugins
     # https://goo.gl/i12JPG
