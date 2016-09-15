@@ -3,6 +3,8 @@ newrelic:
         license_key: f5098a0c0f3c59e6c2fd24e73e4670044f577549
         proxy: '10.0.4.69:8080'
 
-    plugins:
+    packages:
         newrelic-php5: true
 
+    plugins:
+        newrelic-php5: true
