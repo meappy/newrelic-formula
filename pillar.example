@@ -3,12 +3,27 @@ newrelic:
         license_key: f5098a0c0f3c59e6c2fd24e73e4670044f577549
         proxy: '10.0.4.69:8080'
 
-    packages:
-        newrelic-php: true
+    package:
+        newrelic-php5:
+            newrelic.appname: 'PHP Application'
+        newrelic-php5-common:
 
-    # We're going to use New Relic Platform Installer (NPI) to install plugins
-    # https://goo.gl/i12JPG
-    plugins:
-        memcached: true
-        nginx: true
-        php_fpm: true
+    # Multi-Plugin python-based Agent for NewRelic's Platform
+    # New Relic Platform Installer (NPI) can be used too, but does not have php-fpm
+    # https://goo.gl/9BV6T0
+    plugin:
+        source: meetme
+        name:
+            memcached:
+                name: {{ salt['grains.get']('fqdn') }}
+                host: localhost
+                port: 11211
+            php_fpm:
+                name: {{ salt['grains.get']('fqdn') }}
+                scheme: http
+                host: localhost
+                port: 80
+                path: /fpm-status
+                query: json
+
+# vim: set bg=dark syntax=yaml paste:
