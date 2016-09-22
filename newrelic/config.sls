@@ -5,3 +5,5 @@ newrelic_nrsysmond:
             - name:     {{ newrelic.nrsysmond.name     }}
             - source:   {{ newrelic.nrsysmond.source   }}
             - template: {{ newrelic.nrsysmond.template }}
+
+# vim: set bg=dark syntax=yaml paste:

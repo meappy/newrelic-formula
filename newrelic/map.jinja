@@ -10,11 +10,22 @@
             'humanname':    'New Relic packages for Enterprise Linux 5 - $basearch',
             'name':         'newrelic',
             'baseurl':      'http://yum.newrelic.com/pub/newrelic/el5/$basearch',
-            'gpgcheck':     true,
             'gpgkey':       'https://download.newrelic.com/548C16BF.gpg',
+            'gpgcheck':     1,
+            'enabled':      1,
         },
     }, default='RedHat'),
 
+    'epel': salt['grains.filter_by']({
+        'RedHat': {
+            'humanname':    'Extra Packages for Enterprise Linux $releasever - $basearch',
+            'name':         'epel',
+            'baseurl':      'https://download.fedoraproject.org/pub/epel/$releasever/$basearch',
+            'gpgkey':       'https://download.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever',
+            'gpgcheck':     1,
+            'enabled':      0,
+        },
+    }, default='RedHat'),
 
     'nrsysmond': salt['grains.filter_by']({
         'RedHat': {
@@ -24,15 +35,14 @@
         },
     }, default='RedHat'),
 
-
     'service': salt['grains.filter_by']({
         'RedHat': {
             'state':        'running',
             'name':         'newrelic-sysmond',
-            'enable':       'none',
+            'enable':       True,
+            'reload':       True,
         },
     }, default='RedHat'),
-
 
     'install': salt['grains.filter_by']({
         'RedHat': {
@@ -42,4 +52,4 @@
 
 }, merge=true) %}
 
-# vim: set bg=dark syntax=yaml paste:
+# vim: set bg=dark syntax=jinja paste:

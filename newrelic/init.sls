@@ -2,6 +2,9 @@ include:
     - newrelic.repo
     - newrelic.install
     - newrelic.config
-    - newrelic.packages
+    - newrelic.package
+    - newrelic.install-php-agent
+    - newrelic.plugin
     - newrelic.service
-    - newrelic.newrelic-php-agent-install
+
+# vim: set bg=dark syntax=yaml paste:

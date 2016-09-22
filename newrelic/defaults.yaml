@@ -2,3 +2,5 @@ nrsysmond:
         license_key: 'REPLACE_WITH_REAL_KEY'
         loglevel: 'info'
         logfile: '/var/log/newrelic/nrsysmond.log'
+
+# vim: set bg=dark syntax=yaml paste:
