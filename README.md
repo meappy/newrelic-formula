@@ -9,16 +9,17 @@
 
 1. Plugin uses MeetMe's multi-plugin python-based agent. Will include the ability to use New Relic Platform
    Installer (NPI) utility which is java-based.
-1. Now that there is a method to locate PHP ini dir, could create templated newrelic.ini file instead of 
+2. Now that there is a method to locate PHP ini dir, could create templated newrelic.ini file instead of 
    relying on official newrelic-install script
+3. Nested dict will need to have defined values, Jinja template will need be structurted to check if variable exists
 
 ## Installation
 
-TODO: Describe the installation process
+`git clone ...`
 
 ## Usage
 
-TODO: Write usage instructions
+See pillar.example
 
 ## Contributing
 
@@ -38,4 +39,4 @@ TODO: Write credits
 
 ## License
 
-TODO: Write license (should already be written)
+See LICENSE file
