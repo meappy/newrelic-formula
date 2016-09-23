@@ -1,6 +1,7 @@
 # New Relic Formula
-Formula to configure New Relic via pillar (see pillar.example)
-Fully functioning New Relic Formula, includes setting up system, application agents and application plugins 
+
+- Formula to configure New Relic via pillar (see pillar.example)
+- Fully functioning New Relic Formula, includes setting up system, application agents and application plugins 
 
 ----
 
@@ -10,8 +11,6 @@ Fully functioning New Relic Formula, includes setting up system, application age
    Installer (NPI) utility which is java-based.
 1. Now that there is a method to locate PHP ini dir, could create templated newrelic.ini file instead of 
    relying on official newrelic-install script
-
-TODO: Write a project description
 
 ## Installation
 
@@ -39,4 +38,4 @@ TODO: Write credits
 
 ## License
 
-TODO: Write license
+TODO: Write license (should already be written)
