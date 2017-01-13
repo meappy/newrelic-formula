@@ -1,29 +1,51 @@
+# Values populated as examples
 newrelic:
     nrsysmond:
-        license_key: f5098a0c0f3c59e6c2fd24e73e4670044f577549
+        license_key: '116498D18F434240AFC3E9B72C750A83'
         proxy: '10.0.4.69:8080'
+        loglevel: 'info'
+        logfile: '/var/log/newrelic/nrsysmond.log'
 
     package:
         newrelic-php5:
-            newrelic.appname: 'PHP Application'
+            newrelic.appname: 'PHP Default'
         newrelic-php5-common:
 
     # Multi-Plugin python-based Agent for NewRelic's Platform
     # New Relic Platform Installer (NPI) can be used too, but does not have php-fpm
     # https://goo.gl/9BV6T0
     plugin:
-        source: meetme
-        name:
-            memcached:
-                name: {{ salt['grains.get']('fqdn') }}
-                host: localhost
-                port: 11211
-            php_fpm:
-                name: {{ salt['grains.get']('fqdn') }}
-                scheme: http
-                host: localhost
-                port: 80
-                path: /fpm-status
-                query: json
+        source:
+            meetme:
+                type:
+                    memcached:
+                        name: {{ salt['grains.get']('fqdn') }}
+                        host: localhost
+                        port: 11211
+                    php_fpm:
+                        name: {{ salt['grains.get']('fqdn') }}
+                        scheme: http
+                        host: localhost
+                        port: 80
+                        path: /fpm-status
+                        query: json
+            npi:
+                type:
+                    mysql:
+                        plugin: com.newrelic.plugins.mysql.instance
+                        config:
+                            agents:
+                                - 
+                                  name: "db1.domain.net"
+                                  host: "127.0.0.1"
+                                  metrics: "status,newrelic,slave,innodb_status,innodb_mutex"
+                                  user: "replication"
+                                  passwd: "Jf<==^#rYt6.,&fN"
+                                - 
+                                  name: "db2.domain.net"
+                                  host: "127.0.0.1"
+                                  metrics: "status,newrelic,slave,innodb_status,innodb_mutex"
+                                  user: "replication"
+                                  passwd: "Jf<==^#rYt6.,&fN"
 
 # vim: set bg=dark syntax=yaml paste:

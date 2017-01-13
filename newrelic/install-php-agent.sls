@@ -16,10 +16,12 @@
                         - name: /usr/bin/newrelic-install install
                         - onlyif: which newrelic-install
                         - env:
+                            # Looks like sending env variables is not working, need to run from minion
+                            # salt-call -l debug state.apply newrelic
                             - NR_INSTALL_SILENT: '1'
                             - NR_INSTALL_KEY: {{ newrelic.nrsysmond.license_key }}
-                        - onchanges:
-                            - pkg: {{ i }}
+                        #- onchanges:
+                        #    - pkg: {{ i }}
     
                 {% for key in p.keys() -%}
                      {% for key,value in p[key].items() -%}
