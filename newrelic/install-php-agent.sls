@@ -13,15 +13,18 @@
             {% if s in i %}
                 Run /usr/bin/newrelic-install install:
                     cmd.run:
-                        - name: /usr/bin/newrelic-install install
+                        # Unfortunately for RedHat SCL installed PHP software, will need to source
+                        # /opt/rh/*php*/enable. The problem with doing this is this may break with
+                        # multiple installations of PHP.
+                        # Alternatively, with PHP env set up properly, can run the following from
+                        # the minion:
+                        # salt-call -l debug state.apply newrelic
+                        - name: source /opt/rh/*php*/enable; /usr/bin/newrelic-install install
                         - onlyif: which newrelic-install
+                        - unless: [ -f {{ nr_inifile }} ]
                         - env:
-                            # Looks like sending env variables is not working, need to run from minion
-                            # salt-call -l debug state.apply newrelic
                             - NR_INSTALL_SILENT: '1'
                             - NR_INSTALL_KEY: {{ newrelic.nrsysmond.license_key }}
-                        #- onchanges:
-                        #    - pkg: {{ i }}
     
                 {% for key in p.keys() -%}
                      {% for key,value in p[key].items() -%}
