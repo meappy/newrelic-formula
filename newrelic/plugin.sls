@@ -74,17 +74,23 @@
             Download NPI utility:
                 cmd.run:
                     - name: 'wget -P /tmp https://download.newrelic.com/npi/release/install-npi-linux-redhat-x64.sh'
+                    {% if salt['pillar.get']('newrelic:nrsysmond:proxy') %}
+                    {% set proxy = 'http://' ~  salt['pillar.get']('newrelic:nrsysmond:proxy') %}
                     - env:
-                        - http_proxy: 'http://10.69.0.200:8080'
-                        - https_proxy: 'http://10.69.0.200:8080'
+                        - http_proxy: {{ proxy }}
+                        - https_proxy: {{ proxy }}
+                    {% endif %}
                     - unless: '[ -f /opt/newrelic-npi/npi ]'
     
             Install NPI utility:
                 cmd.run:
                     - name: 'bash /tmp/install-npi-linux-redhat-x64.sh'
                     - env:
-                        - http_proxy: 'http://10.69.0.200:8080'
-                        - https_proxy: 'http://10.69.0.200:8080'
+                        {% if salt['pillar.get']('newrelic:nrsysmond:proxy') %}
+                        {% set proxy = 'http://' ~ salt['pillar.get']('newrelic:nrsysmond:proxy') %}
+                        - http_proxy: {{ proxy }}
+                        - https_proxy: {{ proxy }}
+                        {% endif %}
                         - LICENSE_KEY: {{ newrelic.nrsysmond.license_key }}
                         - PREFIX: '/opt/newrelic-npi' 
                         - UNATTENDED: 'true'
@@ -97,11 +103,13 @@
                     - onchanges:
                         - cmd: Install NPI utility
     
+            {% if salt['pillar.get']('newrelic:nrsysmond:proxy') %}
             Configure NPI utility:
                 cmd.run:
                     - name: 'cd /opt/newrelic-npi; ./npi config set proxy_host 10.69.0.200; ./npi config set proxy_port 8080'
                     - onchanges:
                         - cmd: Install NPI utility
+            {% endif %}
     
             {% set plugin = newrelic.plugin.source.npi.type.mysql.plugin %}
             Install NPI plugin:
