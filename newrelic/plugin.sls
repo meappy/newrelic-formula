@@ -1,6 +1,17 @@
 {% from 'newrelic/map.jinja' import newrelic with context %}
 # Test for pillar data: https://goo.gl/x3RZhg
 {% if salt['pillar.get']('newrelic:plugin') %}
+    {% set proxy = 'http://10.69.0.200:8080' %}
+
+    {% set pip = [] %}
+    {% if salt['pillar.get']('newrelic:plugin:python:pip') %}
+        {% do pip.append(salt['pillar.get']('newrelic:plugin:python:pip')) %}
+        {% do pip.append('centos-sclo-rh') %}
+    {% else %}
+        {% do pip.append('python-pip') %}
+        {% do pip.append('epel') %}
+    {% endif %}
+
     {% set p = newrelic.plugin %}
     {% set s = newrelic.plugin.source if newrelic.plugin.source != None else 'meetme' %}
     {% for k in s %}
@@ -15,10 +26,11 @@
     
             Install python-pip package:
                 pkg.latest:
-                    - name: python-pip
-                    - fromrepo: epel
+                    - name: {{ pip[0] }}
+                    - fromrepo: {{ pip[1] }}
                     - refresh: True
                     - unless: 'rpm -qa | egrep "python.*pip"'
+                    - reload_modules: True
     
             # https://goo.gl/eU65Ix
             Run wget https://bootstrap.pypa.io/ez_setup.py:
@@ -26,18 +38,28 @@
                     - name: wget https://bootstrap.pypa.io/ez_setup.py -O - | python
                     - onlyif: which pip
                     - onchanges:
-                        - pkg: python-pip
+                        - pkg: {{ pip[0] }}
     
             # May encounter "Certificate verify failed when uploading to NewRelic #480" issue: https://goo.gl/rXcdXL
             # Check /var/log/newrelic/newrelic-plugin-agent.log
     
             # https://goo.gl/2NcJYs
+            #Install newrelic-plugin-agent:
+            #    pip.installed:
+            #        - name: newrelic-plugin-agent
+            #        # Unfortunately, I'm hardcoding the absolute path of pip for now 20180130: Not working still
+            #        # https://github.com/saltstack/salt/issues/38916
+            #        - bin_env: /opt/rh/python27/root/usr/bin/pip
+            #        - require:
+            #            - pkg: {{ pip[0] }}
+            #        - unless: 'which newrelic-plugin-agent'
+
+            # Same as above but using cmd.run instead
             Install newrelic-plugin-agent:
-                pip.installed:
-                    - name: newrelic-plugin-agent
-                    - require:
-                        - pkg: python-pip
-                    - unless: 'which newrelic-plugin-agent'
+                cmd.run:
+                    - name: source /opt/rh/python*/enable; /opt/rh/python27/root/usr/bin/pip install newrelic-plugin-agent
+                    - runas: root
+                    - unless: 'ls -ld /opt/newrelic-plugin-agent'
     
             Configure newrelic-plugin-agent:
                 file.managed:
@@ -74,23 +96,17 @@
             Download NPI utility:
                 cmd.run:
                     - name: 'wget -P /tmp https://download.newrelic.com/npi/release/install-npi-linux-redhat-x64.sh'
-                    {% if salt['pillar.get']('newrelic:nrsysmond:proxy') %}
-                    {% set proxy = 'http://' ~  salt['pillar.get']('newrelic:nrsysmond:proxy') %}
                     - env:
                         - http_proxy: {{ proxy }}
                         - https_proxy: {{ proxy }}
-                    {% endif %}
                     - unless: '[ -f /opt/newrelic-npi/npi ]'
     
             Install NPI utility:
                 cmd.run:
                     - name: 'bash /tmp/install-npi-linux-redhat-x64.sh'
                     - env:
-                        {% if salt['pillar.get']('newrelic:nrsysmond:proxy') %}
-                        {% set proxy = 'http://' ~ salt['pillar.get']('newrelic:nrsysmond:proxy') %}
                         - http_proxy: {{ proxy }}
                         - https_proxy: {{ proxy }}
-                        {% endif %}
                         - LICENSE_KEY: {{ newrelic.nrsysmond.license_key }}
                         - PREFIX: '/opt/newrelic-npi' 
                         - UNATTENDED: 'true'
@@ -103,7 +119,7 @@
                     - onchanges:
                         - cmd: Install NPI utility
     
-            {% if salt['pillar.get']('newrelic:nrsysmond:proxy') %}
+            {% if salt['pillar.get']('newrelic:nrsysmond:proxy') or salt['pillar.get']('newrelic:infra:proxy') %}
             Configure NPI utility:
                 cmd.run:
                     - name: 'cd /opt/newrelic-npi; ./npi config set proxy_host 10.69.0.200; ./npi config set proxy_port 8080'

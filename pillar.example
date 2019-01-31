@@ -1,7 +1,7 @@
 # Values populated as examples
 newrelic:
     nrsysmond:
-        license_key: '116498D18F434240AFC3E9B72C750A83'
+        license_key: '00101001010001001110011110110000'
         proxy: '10.0.4.69:8080'
         loglevel: 'info'
         logfile: '/var/log/newrelic/nrsysmond.log'
@@ -40,12 +40,12 @@ newrelic:
                                   host: "127.0.0.1"
                                   metrics: "status,newrelic,slave,innodb_status,innodb_mutex"
                                   user: "replication"
-                                  passwd: "Jf<==^#rYt6.,&fN"
+                                  passwd: "GpzPP!GcP>Psv9R<"
                                 - 
                                   name: "db2.domain.net"
                                   host: "127.0.0.1"
                                   metrics: "status,newrelic,slave,innodb_status,innodb_mutex"
                                   user: "replication"
-                                  passwd: "Jf<==^#rYt6.,&fN"
+                                  passwd: "GpzPP!GcP>Psv9R<"
 
 # vim: set bg=dark syntax=yaml paste:

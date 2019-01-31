@@ -1,0 +1,8 @@
+{%- set p = salt['pillar.get']('newrelic:infra') -%}
+#
+# **** Managed by SaltStack ****
+# ****     DO NOT EDIT      ****
+#
+{% for k,v in p.items() %}
+{{ k }}: {{ v }}
+{%- endfor -%}

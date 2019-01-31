@@ -16,6 +16,17 @@
         },
     }, default='RedHat'),
 
+    'infrarepo': salt['grains.filter_by']({
+        'RedHat': {
+            'humanname':    'New Relic Infrastructure',
+            'name':         'newrelic-infra',
+            'baseurl':      'http://download.newrelic.com/infrastructure_agent/linux/yum/el/$releasever/$basearch',
+            'gpgkey':       'http://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg',
+            'gpgcheck':     1,
+            'enabled':      1,
+        },
+    }, default='RedHat'),
+
     'epel': salt['grains.filter_by']({
         'RedHat': {
             'humanname':    'Extra Packages for Enterprise Linux $releasever - $basearch',
@@ -24,6 +35,14 @@
             'gpgkey':       'https://download.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever',
             'gpgcheck':     1,
             'enabled':      0,
+        },
+    }, default='RedHat'),
+
+    'infra': salt['grains.filter_by']({
+        'RedHat': {
+            'name':         '/etc/newrelic-infra.yml',
+            'source':       'salt://newrelic/files/infra.yml.jinja',
+            'template':     'jinja',
         },
     }, default='RedHat'),
 

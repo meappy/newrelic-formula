@@ -6,6 +6,11 @@ Configure New Relic repo:
         {% for k,v in newrelic.repo.items() -%}
             - {{ k }}: {{ v }}
         {% endfor %}
+Configure New Relic Infra repo:
+    pkgrepo.managed:
+        {% for k,v in newrelic.infrarepo.items() %}
+            - {{ k }}: {{ v }}
+        {% endfor %}
 Configure EPEL repo:
     pkgrepo.managed:
         {% for k,v in newrelic.epel.items() -%}

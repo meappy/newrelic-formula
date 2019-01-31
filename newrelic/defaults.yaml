@@ -1,6 +1,6 @@
-nrsysmond:
+infra:
         license_key: 'REPLACE_WITH_REAL_KEY'
-        loglevel: 'info'
-        logfile: '/var/log/newrelic/nrsysmond.log'
+        verbose: '0'
+        logfile: '/var/log/newrelic/infra.log'
 
 # vim: set bg=dark syntax=yaml paste:

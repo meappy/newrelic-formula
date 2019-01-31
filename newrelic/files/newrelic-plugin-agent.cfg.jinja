@@ -2,6 +2,11 @@
 {%- set p = newrelic.plugin.source.meetme.type -%}
 %YAML 1.2
 ---
+{% if salt['pillar.get']('newrelic:nrsysmond:license_key') %}
+    {% set license_key = newrelic.nrsysmond.license_key %}
+{% elif salt['pillar.get']('newrelic:infra:license_key') %}
+    {% set license_key = newrelic.infra.license_key %}
+{% endif %}
 
 #
 # **** Managed by SaltStack ****
@@ -9,7 +14,7 @@
 #
 
 Application:
-  license_key: {{ newrelic.nrsysmond.license_key }}
+  license_key: {{ license_key }}
   wake_interval: 60
   {% for key in p.keys() %}
   {{ key }}:

@@ -9,7 +9,9 @@
 . /etc/init.d/functions
 
 # Application
-APP="/usr/bin/newrelic-plugin-agent"
+. /opt/rh/python27/enable
+APP="/opt/rh/python27/root/usr/bin/newrelic-plugin-agent"
+#APP="/usr/bin/newrelic-plugin-agent"
 
 # Configuration dir
 CONFIG_DIR="/etc/newrelic"
